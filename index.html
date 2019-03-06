@@ -24,22 +24,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 </head>
-<body>
+<body class="bg-primary">
 <div class="container-fluid my-container">
     <div class="row upper-row">
         <div class="col-lg-8 message-container">
-            Row 1 Col 1 - Message Container
+            <div class="h-100 d-flex flex-column">
+                <h5 class="m-0"> Messages: </h5>
+                <ul class="form-control flex-grow-1 messages-section">
+                    <li>Message 1</li>
+                    <li>Message 2</li>
+                </ul>
+            </div>
         </div>
         <div class="col-lg-4 users-container">
-            Row 1 Col 2 - Users Container
+            <div class="h-100 d-flex flex-column">
+                <h5 class="m-0">Users: </h5>
+                <ul class="form-control flex-grow-1 users-section">
+                    <li>User 1</li>
+                    <li>User 2</li>
+                    <li>User 3</li>
+                    <li>User 4</li>
+                </ul>
+            </div>
         </div>
     </div>
     <div class="row lower-row">
-        <div class="col-9 input-container">
-            Row 2 Col 1 - Input Section
+        <div class="col-9 p-0 input-container">
+            <input class="form-control input-form" type="text" placeholder="Message...">
         </div>
         <div class="col-3 button-container">
-            Row 2 Col 2 - Button Section
+            <button class="btn btn-primary send-button">Send</button>
         </div>
     </div>
 </div>
