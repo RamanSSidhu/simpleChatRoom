@@ -28,14 +28,34 @@
 <div class="main-container">
     <div class="upper-row">
         <div class="messages-container">
-                <h5 class="m-0"> Messages: </h5>
+                <h5 class="section-header"> Messages: </h5>
                 <ul class="form-control messages-section">
-                    <li>Message 1</li>
-                    <li>Message 2</li>
+                    <li>
+                        <div class="single-message-container">
+                            <div class="single-message">
+                                <div class="message-details-container">
+                                    <span class="in-message-user-name">User 1</span>
+                                    <span class="in-message-date">03-06-19: 1:23pm</span>
+                                </div>
+                                <div class="message-contents-container">
+                                    <span class="message-contents">Hey, how are you?</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li style="align-self: flex-end">                         <div class="single-message">
+                        <div class="message-details-container">
+                            <span class="in-message-user-name">User 2</span>
+                            <span class="in-message-date">03-06-19: 1:35pm</span>
+                        </div>
+                        <div class="message-contents-container">
+                                    <span class="message-contents">Good, you?</span>
+                        </div>
+                    </div></li>
                 </ul>
         </div>
         <div class="users-container">
-                <h5 class="m-0">Users: </h5>
+                <h5 class="section-header">Users: </h5>
                 <ul class="form-control users-section">
                     <li>User 1</li>
                     <li>User 2</li>
@@ -49,7 +69,7 @@
             <input class="form-control input-form" type="text" placeholder="Message...">
         </div>
         <div class="button-container">
-            <button class="btn btn-primary send-button">Send</button>
+            <button class="btn send-button">Send</button>
         </div>
     </div>
 </div>
