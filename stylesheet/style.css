@@ -9,6 +9,18 @@ body {
 
 /* MEDIA QUERY */
 
+@media screen and (max-height: 600px){
+    body {
+        padding: 0px;
+        background-color: white;
+    }
+
+    .main-container {
+        box-shadow: none;
+        border-radius: 0px;
+    }
+}
+
 @media screen and (max-width: 600px) {
     body {
         padding: 0px;
@@ -17,6 +29,7 @@ body {
 
     .main-container {
         box-shadow: none;
+        border-radius: 0px;
     }
 
     .upper-row {
@@ -43,7 +56,7 @@ body {
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-
+    min-height: 200px;
 }
 
 .upper-row {
@@ -54,7 +67,6 @@ body {
 .lower-row {
     display: flex;
     flex-direction: row;
-    height: 10%;
 }
 
 .messages-container {
@@ -82,6 +94,7 @@ body {
 
 .button-container {
     flex: 1;
+    padding: 10px;
 }
 
 .users-section {
