@@ -7,36 +7,6 @@ body {
     height: 100%;
 }
 
-/* MEDIA QUERY */
-
-@media screen and (max-width: 600px) {
-    body {
-        padding: 0px;
-        background-color: white;
-    }
-
-    .main-container {
-        box-shadow: none;
-        border-radius: 0px;
-    }
-
-    .upper-row {
-        flex-direction: column;
-    }
-
-    .messages-container {
-        order: 2;
-        height: 75%;
-        width: 100% !important;
-    }
-
-    .users-container {
-        width: 100% !important;
-    }
-}
-
-/* END OF MEDIA QUERY */
-
 .main-container {
     background-color: white;
     box-shadow: 0 8px 6px -6px black;
@@ -141,3 +111,44 @@ body {
     font-size: small;
     float: right;
 }
+
+/* MEDIA QUERY */
+
+@media screen and (max-width: 600px) {
+    body {
+        padding: 0px;
+    }
+
+    .main-container {
+        box-shadow: none;
+        border-radius: 0px;
+    }
+
+    .upper-row {
+        flex-direction: column;
+    }
+
+    .messages-container {
+        order: 2;
+        height: 75%;
+        width: 100% !important;
+    }
+
+    .users-container {
+        width: 100% !important;
+    }
+}
+
+@media screen and (max-width: 700px) and (orientation: landscape) {
+
+    body {
+        padding: 0px;
+    }
+
+    .main-container {
+        box-shadow: none;
+        border-radius: 0px;
+    }
+}
+
+/* END OF MEDIA QUERY */
