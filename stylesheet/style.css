@@ -7,31 +7,62 @@ body {
     height: 100%;
 }
 
+/* MEDIA QUERY */
+
 @media screen and (max-width: 600px) {
     body {
         padding: 0px;
         background-color: white;
     }
+
+    .main-container {
+        box-shadow: none;
+    }
+
+    .upper-row {
+        flex-direction: column;
+    }
+
+    .messages-container {
+        order: 2;
+        flex: 1;
+        width: 100%;
+    }
+
+    .users-container {
+        flex: 1;
+        width: 100%;
+    }
 }
 
-.my-container {
+/* END OF MEDIA QUERY */
+
+.main-container {
     background-color: white;
     box-shadow: 0 8px 6px -6px black;
     height: 100%;
     border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+
 }
 
 .upper-row {
-    height: 90%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    flex: 90%;
 }
 
 .lower-row {
-    height: 10%;
+    flex: 10%;
 }
 
-.message-container {
+.messages-container {
     border-top-left-radius: 10px;
     padding: 10px;
+    flex: 1;
+    width: 66.7%;
 }
 
 .users-container {
@@ -58,6 +89,7 @@ body {
     width: 100%;
     padding: 0px;
     margin: 0px;
+    overflow-y: scroll;
 }
 
 .messages-section {
@@ -65,6 +97,7 @@ body {
     width: 100%;
     padding: 0px;
     margin: 0px;
+    overflow-y: scroll;
 }
 
 .user-box {
