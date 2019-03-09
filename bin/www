@@ -96,6 +96,6 @@ function onListening() {
 // Socket Setup
 var io = socket(server);
 
-io.on('connection', function() {
+io.on('connection', () => {
   console.log("Made Socket Connection");
 });

@@ -4,6 +4,8 @@ Assignment: 3 - Simple Chat Room
 Student ID: 30011040
 Tutorial Section: B02
  */
+var socket =  require('socket.io');
+
 let currentUser = "Raman";
 
 function renderUserList (userList) {
@@ -35,8 +37,6 @@ function renderMessageList (messageList) {
 
 $(document).ready(() => {
 
-    let users = [{username: "Wahaj", color: "red", timestamp: Date.now(), message: "I am a silly billy"},
-        {username: "Raman", color: "blue", timestamp: Date.now(), message: "Yes you are."}];
-    renderMessageList(users);
+    socket.connect("http://localhost:3000");
 
 });
