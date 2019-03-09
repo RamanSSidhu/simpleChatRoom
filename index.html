@@ -16,6 +16,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
             integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
             crossorigin="anonymous"></script>
+    <script src="chat.js"></script>
 
     <!-- Additional Styling -->
     <link rel="stylesheet" href="stylesheet/style.css" type="text/css">
@@ -29,7 +30,7 @@
     <div class="upper-row">
         <div class="messages-container">
             <h5 class="section-header"> Messages: </h5>
-            <ul class="form-control messages-section">
+            <ul id="messages-list" class="form-control messages-section">
                 <li class="single-message">
                     <div class="message-details-container">
                         <span class="in-message-user-name">User 1</span>
@@ -43,11 +44,11 @@
         </div>
         <div class="users-container">
             <h5 class="section-header">Users: </h5>
-            <ul class="form-control users-section">
-                <li>User 1</li>
-                <li>User 2</li>
-                <li>User 3</li>
-                <li>User 4</li>
+            <ul id="users-list" class="form-control users-section">
+                <li class="single-user">User 1</li>
+                <li class="single-user">User 2</li>
+                <li class="single-user">User 3</li>
+                <li class="single-user">User 4</li>
             </ul>
         </div>
     </div>
