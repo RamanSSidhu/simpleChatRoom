@@ -14,7 +14,7 @@ function renderUserList (userList) {
     let unorderedUserList = $(`#users-list`);
 
     userListMap.forEach((value, key, map) => {
-        unorderedUserList.append(`<li class="single-user" style="color: ${value}">${key}</li>`);
+        unorderedUserList.append(`<li id="${key}" class="single-user" style="color: ${value}">${key}</li>`);
     });
 }
 
@@ -36,6 +36,10 @@ function renderMessageList (messageList) {
                     </div>
                 </li>`);
     })
+}
+
+function deleteFromUserList(userObject) {
+    $(`#${userObject.username}`).remove();
 }
 
 $(document).ready(() => {
@@ -70,5 +74,7 @@ $(document).ready(() => {
     socket.on('addMessages', renderMessageList);
 
     socket.on('addUsers', renderUserList);
+
+    socket.on('deleteUser', deleteFromUserList);
 
 });

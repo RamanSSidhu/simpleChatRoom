@@ -165,9 +165,10 @@ io.on('connection', (socket) => {
     socket.broadcast.emit(`addUsers`, JSON.stringify((Array.from(new Map().set(userObject.username, userObject.color)))));
 
     // On Disconnect
-    socket.on('disconnect', (socket) => {
+    socket.on('disconnect', () => {
         console.log(`Disconnected.`);
-        usersMap.delete(socket.id);
+        colorsMap.delete(userObject.username);
+        socket.broadcast.emit(`deleteUser`, userObject);
     });
 
     // Receive Single Message and Broadcast
