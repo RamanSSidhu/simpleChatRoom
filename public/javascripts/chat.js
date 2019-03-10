@@ -5,7 +5,8 @@ Student ID: 30011040
 Tutorial Section: B02
  */
 
-let currentUser = "Raman";
+let root = document.documentElement;
+let currentUser = "User#";
 
 function renderUserList (userList) {
     let unorderedUserList = $(`#users-list`);
@@ -16,6 +17,7 @@ function renderUserList (userList) {
 }
 
 function renderMessageList (messageList) {
+    console.log(`Received Message List: ${messageList}`);
     let unorderedMessageList = $(`#messages-list`);
 
     $.each(messageList, (index, value) => {
@@ -28,14 +30,34 @@ function renderMessageList (messageList) {
                         <span class="in-message-date">${value.timestamp}</span>
                     </div>
                     <div class="message-contents-container">
-                        <span class="message-contents">${value.message}</span>
+                        <span class="message-contents">${value.messageContent}</span>
                     </div>
                 </li>`);
     })
 }
 
 $(document).ready(() => {
-
     let socket = io.connect("http://localhost:3000");
 
+    socket.on('setUser', (userObject) => {
+        console.log(`Received Username: ${userObject.username}`);
+        console.log(`Received Color: ${userObject.color}`);
+        currentUser = userObject.username;
+        root.style.setProperty('--user-color', userObject.color);
+    });
+
+    $(`#btn-send`).on('click', () => {
+        let inputBoxContents = $(`#input-box`).val();
+        if (inputBoxContents !== "")  {
+            let messageObject = {
+                messageContent: inputBoxContents,
+                username: currentUser
+            }
+            socket.emit('newMessage', messageObject);
+            console.log(`Message Sent: ${messageObject.messageContent} User: ${messageObject.username}`);
+            $(`#input-box`).val('');
+        }
+    });
+
+    socket.on('addMessages', renderMessageList);
 });

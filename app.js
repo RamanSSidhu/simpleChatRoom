@@ -101,11 +101,82 @@ function onListening() {
 }
 
 /**
+ * Globals
+ */
+let usersMap = new Map();
+let colorsMap = new Map();
+let numUsers = 0;
+let messageList = new Array();
+
+function getColor(number) {
+    switch (number % 10) {
+        case 0:
+            return "maroon";
+        case 1:
+            return "blue";
+        case 2:
+            return "green";
+        case 3:
+            return "purple";
+        case 4:
+            return "navy";
+        case 5:
+            return "lime";
+        case 6:
+            return "black";
+        case 7:
+            return "teal";
+        case 8:
+            return "pink";
+        case 9:
+            return "indigo";
+    }
+}
+
+/**
  * Socket Setup
  */
 // Socket Setup
 var io = socket(server);
 
-io.on('connection', () => {
-    console.log("Made Socket Connection");
+/**
+ * Socket Handling
+ */
+io.on('connection', (socket) => {
+    console.log(`New Connection: ${socket.id}`);
+    let userColor = getColor(numUsers);
+    let userObject = {
+        username: `User${++numUsers}`,
+        color: userColor
+    };
+    colorsMap.set(userObject.username, userObject.color);
+    usersMap.set(socket.id, userObject);
+    socket.emit('setUser', userObject);
+
+    socket.on('disconnect', (socket) => {
+        console.log(`Disconnected.`);
+        usersMap.delete(socket.id);
+    });
+
+    socket.on('newMessage', (message) => {
+        console.log(`New Message Received: ${message}`);
+        let date = new Date();
+        let messageObject = {
+            username: message.username,
+            messageContent: message.messageContent,
+            timestamp: date.toLocaleString(),
+            color: colorsMap.get(message.username)
+        };
+
+        console.log(`Sending Message: 
+        Message Content: ${messageObject.messageContent} 
+        User: ${messageObject.username}
+        TimeStamp: ${messageObject.timestamp}
+        Color: ${messageObject.color}`);
+        messageList.push(messageObject);
+        let singleMessageList = [messageObject];
+        io.sockets.emit(`addMessages`, messageList)
+        singleMessageList.pop();
+    });
 });
+
