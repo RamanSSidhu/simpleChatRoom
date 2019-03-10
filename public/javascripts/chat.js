@@ -59,5 +59,11 @@ $(document).ready(() => {
         }
     });
 
+    $(document).keypress((keyPressed) => {
+        if(keyPressed.which == 13) {
+            $(`#btn-send`).click();
+        }
+    });
+
     socket.on('addMessages', renderMessageList);
 });

@@ -153,11 +153,16 @@ io.on('connection', (socket) => {
     usersMap.set(socket.id, userObject);
     socket.emit('setUser', userObject);
 
+    if (messageList.length != 0) {
+        socket.emit(`addMessages`, messageList);
+    }
+
     socket.on('disconnect', (socket) => {
         console.log(`Disconnected.`);
         usersMap.delete(socket.id);
     });
 
+    // Receive Single Message and Broadcast
     socket.on('newMessage', (message) => {
         console.log(`New Message Received: ${message}`);
         let date = new Date();
@@ -174,9 +179,7 @@ io.on('connection', (socket) => {
         TimeStamp: ${messageObject.timestamp}
         Color: ${messageObject.color}`);
         messageList.push(messageObject);
-        let singleMessageList = [messageObject];
-        io.sockets.emit(`addMessages`, messageList)
-        singleMessageList.pop();
+        io.sockets.emit(`addMessages`, [messageObject])
     });
 });
 
