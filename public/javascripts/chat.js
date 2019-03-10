@@ -9,10 +9,12 @@ let root = document.documentElement;
 let currentUser = "User#";
 
 function renderUserList (userList) {
+    let userListMap = new Map(JSON.parse(userList));
+    console.log(`Received User List (Map): ${userList}`);
     let unorderedUserList = $(`#users-list`);
 
-    $.each(userList, (index, value) => {
-        unorderedUserList.append(`<li class="single-user" style="color: ${value.color}">${value.name}</li>`);
+    userListMap.forEach((value, key, map) => {
+        unorderedUserList.append(`<li class="single-user" style="color: ${value}">${key}</li>`);
     });
 }
 
@@ -66,4 +68,7 @@ $(document).ready(() => {
     });
 
     socket.on('addMessages', renderMessageList);
+
+    socket.on('addUsers', renderUserList);
+
 });

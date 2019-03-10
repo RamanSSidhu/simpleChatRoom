@@ -150,13 +150,21 @@ io.on('connection', (socket) => {
         color: userColor
     };
     colorsMap.set(userObject.username, userObject.color);
-    usersMap.set(socket.id, userObject);
+    usersMap.set(socket.id, userObject); // TODO: May not be useful
     socket.emit('setUser', userObject);
 
     if (messageList.length != 0) {
         socket.emit(`addMessages`, messageList);
     }
 
+    // Send all users back to new connection
+    socket.emit(`addUsers`, JSON.stringify(Array.from(colorsMap)));
+
+    // Send only new user to all but new connection
+    //TODO: There must be a better way to do this
+    socket.broadcast.emit(`addUsers`, JSON.stringify((Array.from(new Map().set(userObject.username, userObject.color)))));
+
+    // On Disconnect
     socket.on('disconnect', (socket) => {
         console.log(`Disconnected.`);
         usersMap.delete(socket.id);
