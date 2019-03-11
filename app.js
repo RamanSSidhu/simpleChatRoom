@@ -184,8 +184,17 @@ io.on('connection', (socket) => {
                 io.sockets.emit(`deleteUser`, userObject);
                 colorsMap.set(userObject.username, userObject.color);
                 io.emit(`addUsers`, JSON.stringify((Array.from(new Map().set(userObject.username, userObject.color)))));
-            } else if (/^\/nick\s+(.*)$/) {
-                // TODO: Nick command
+            } else if (/^\/nick\s+(.*)$/.test(message.messageContent)) {
+                let newNicknameRegex = /^\/nick\s+(.*)$/;
+                let newName = message.messageContent.match(newNicknameRegex)[1];
+                let oldUsername = userObject.username;
+                console.log(`New Name: ${newName}`);
+                colorsMap.delete(userObject.username);
+                io.sockets.emit(`deleteUser`, userObject);
+                userObject.username = newName;
+                colorsMap.set(userObject.username, userObject.color);
+                io.emit(`addUsers`, JSON.stringify((Array.from(new Map().set(userObject.username, userObject.color)))));
+                io.emit(`updateUserNameInMessages`, { newUserName: userObject.username, oldUserName: oldUsername });
             } else {
                 // TODO: Error handling
             }

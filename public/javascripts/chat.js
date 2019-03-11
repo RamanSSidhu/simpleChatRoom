@@ -43,9 +43,16 @@ function deleteFromUserList(userObject) {
 }
 
 function updateMessageColors(userObject) {
-    console.log(`NEW COLOR: ${userObject.color}`);
     $(`.user-message-${userObject.username}`).css("border-color", userObject.color);
     $(`.user-message-${userObject.username} .in-message-user-name`).css("color", userObject.color);
+}
+
+function updateUserName (user) {
+    $(`.user-message-${user.oldUserName}`).removeClass(`user-message-${user.oldUserName}`).addClass(`user-message-${user.newUserName}`);
+    $(`.user-message-${user.newUserName} .in-message-user-name`).text(`${user.newUserName}`);
+    if (currentUser == user.oldUserName) {
+        currentUser = user.newUserName;
+    }
 }
 
 $(document).ready(() => {
@@ -86,5 +93,7 @@ $(document).ready(() => {
     socket.on('deleteUser', deleteFromUserList);
 
     socket.on('updateMessageColors', updateMessageColors);
+
+    socket.on('updateUserNameInMessages', updateUserName);
 
 });
