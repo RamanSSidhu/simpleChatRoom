@@ -103,7 +103,6 @@ function onListening() {
 /**
  * Globals
  */
-let usersMap = new Map();
 let colorsMap = new Map();
 let numUsers = 0;
 let messageList = new Array();
@@ -150,7 +149,6 @@ io.on('connection', (socket) => {
         color: userColor
     };
     colorsMap.set(userObject.username, userObject.color);
-    usersMap.set(socket.id, userObject); // TODO: May not be useful
     socket.emit('setUser', userObject);
 
     if (messageList.length != 0) {
@@ -173,22 +171,43 @@ io.on('connection', (socket) => {
 
     // Receive Single Message and Broadcast
     socket.on('newMessage', (message) => {
-        console.log(`New Message Received: ${message}`);
-        let date = new Date();
-        let messageObject = {
-            username: message.username,
-            messageContent: message.messageContent,
-            timestamp: date.toLocaleString(),
-            color: colorsMap.get(message.username)
-        };
 
-        console.log(`Sending Message: 
-        Message Content: ${messageObject.messageContent} 
-        User: ${messageObject.username}
-        TimeStamp: ${messageObject.timestamp}
-        Color: ${messageObject.color}`);
-        messageList.push(messageObject);
-        io.sockets.emit(`addMessages`, [messageObject])
+        if (/^(\/nick|\/nickcolor)/.test(message.messageContent)) {
+            let nickColorRegex = /^\/nickcolor\s+([0-9A-Fa-f]{6})$/;
+            if (/^\/nickcolor\s+([0-9A-Fa-f]{6})$/.test(message.messageContent)) {
+                let colorCode = "#";
+                colorCode += message.messageContent.match(nickColorRegex)[1];
+                console.log(`New Color: ${colorCode}`);
+                userObject.color = colorCode;
+                socket.emit(`updateUserColor`, userObject);
+                io.emit('updateMessageColors', userObject);
+                io.sockets.emit(`deleteUser`, userObject);
+                colorsMap.set(userObject.username, userObject.color);
+                io.emit(`addUsers`, JSON.stringify((Array.from(new Map().set(userObject.username, userObject.color)))));
+            } else if (/^\/nick\s+(.*)$/) {
+                // TODO: Nick command
+            } else {
+                // TODO: Error handling
+            }
+        }
+        else {
+            console.log(`New Message Received: ${message}`);
+            let date = new Date();
+            let messageObject = {
+                username: message.username,
+                messageContent: message.messageContent,
+                timestamp: date.toLocaleString(),
+                color: colorsMap.get(message.username)
+            };
+
+            console.log(`Sending Message: 
+                    Message Content: ${messageObject.messageContent} 
+                    User: ${messageObject.username}
+                    TimeStamp: ${messageObject.timestamp}
+                    Color: ${messageObject.color}`);
+            messageList.push(messageObject);
+            io.sockets.emit(`addMessages`, [messageObject]);
+        }
     });
 });
 

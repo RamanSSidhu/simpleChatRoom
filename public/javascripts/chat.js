@@ -23,10 +23,10 @@ function renderMessageList (messageList) {
     let unorderedMessageList = $(`#messages-list`);
 
     $.each(messageList, (index, value) => {
-        let alignFormat = (value.username !== currentUser) ? `style= "align-self: flex-end; border-color: ${value.color};"` : null;
+        let alignFormat = (value.username !== currentUser) ? `style= "align-self: flex-end; border-color: ${value.color};"` : "";
 
         unorderedMessageList.append(`
-                <li class="single-message" ${alignFormat}>
+                <li class="single-message user-message-${value.username}" ${alignFormat}>
                     <div class="message-details-container">
                         <span class="in-message-user-name" style="color: ${value.color}">${value.username}</span>
                         <span class="in-message-date">${value.timestamp}</span>
@@ -42,6 +42,12 @@ function deleteFromUserList(userObject) {
     $(`#${userObject.username}`).remove();
 }
 
+function updateMessageColors(userObject) {
+    console.log(`NEW COLOR: ${userObject.color}`);
+    $(`.user-message-${userObject.username}`).css("border-color", userObject.color);
+    $(`.user-message-${userObject.username} .in-message-user-name`).css("color", userObject.color);
+}
+
 $(document).ready(() => {
     let socket = io.connect("http://localhost:3000");
 
@@ -54,15 +60,13 @@ $(document).ready(() => {
 
     $(`#btn-send`).on('click', () => {
         let inputBoxContents = $(`#input-box`).val();
-        if (inputBoxContents !== "")  {
-            let messageObject = {
-                messageContent: inputBoxContents,
-                username: currentUser
-            }
-            socket.emit('newMessage', messageObject);
-            console.log(`Message Sent: ${messageObject.messageContent} User: ${messageObject.username}`);
-            $(`#input-box`).val('');
-        }
+
+        socket.emit('newMessage', {
+            messageContent: inputBoxContents,
+            username: currentUser
+        });
+
+        $(`#input-box`).val('');
     });
 
     $(document).keypress((keyPressed) => {
@@ -71,10 +75,16 @@ $(document).ready(() => {
         }
     });
 
+    socket.on('updateUserColor', (userObject) => {
+        root.style.setProperty('--user-color', userObject.color);
+    });
+
     socket.on('addMessages', renderMessageList);
 
     socket.on('addUsers', renderUserList);
 
     socket.on('deleteUser', deleteFromUserList);
+
+    socket.on('updateMessageColors', updateMessageColors);
 
 });
