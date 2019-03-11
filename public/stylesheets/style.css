@@ -107,13 +107,12 @@ body {
     border-radius: 10px;
     background-color: #f5f5f5;
     margin: 5px;
-    max-width: 500px;
-    min-width: 200px;
+    width: 40%;
     padding: 5px;
+    align-self: flex-start;
 }
 
 .single-user {
-    border: 1px solid grey;
     color: var(--user-color);
 }
 
@@ -130,6 +129,10 @@ body {
 .in-message-date {
     font-size: small;
     float: right;
+}
+
+.message-contents {
+    word-wrap: break-word;
 }
 
 /* MEDIA QUERY */
