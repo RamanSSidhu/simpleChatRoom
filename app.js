@@ -199,6 +199,28 @@ io.on('connection', (socket) => {
                     socket.emit('addMessages', [messageObject]);
                     return;
                 }
+                else if (newName === userObject.username) {
+                    let messageObject = {
+                        username: "ChatBot",
+                        messageContent: `That's literally your own name...`,
+                        timestamp: new Date().toLocaleString(),
+                        color: "red"
+                    };
+                    socket.emit('addMessages', [messageObject]);
+                    return;
+                }
+                else if (colorsMap.has(newName)) {
+                    let messageObject = {
+                        username: "ChatBot",
+                        messageContent: `Name ${newName} is taken...`,
+                        timestamp: new Date().toLocaleString(),
+                        color: "red"
+                    };
+                    socket.emit('addMessages', [messageObject]);
+                    return;
+                }
+
+
 
                 let oldUsername = userObject.username;
                 console.log(`New Name: ${newName}`);

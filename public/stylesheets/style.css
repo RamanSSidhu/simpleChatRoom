@@ -25,6 +25,7 @@ body {
 .upper-row {
     display: flex;
     flex: 1;
+    min-height: 0;
 }
 
 .lower-row {
@@ -68,8 +69,7 @@ body {
     width: 100%;
     padding: 0px;
     margin: 0px;
-    overflow-y: scroll;
-    overflow: hidden;
+    overflow-y: hidden;
 }
 
 .messages-section {
@@ -80,8 +80,11 @@ body {
     width: 100%;
     padding: 0px;
     margin: 0px;
+    overflow-y: hidden;
+}
+
+.messages-section:hover, .users-section:hover {
     overflow-y: scroll;
-    overflow: hidden;
 }
 
 .section-header {
@@ -118,6 +121,10 @@ body {
     color: var(--user-color);
     font-size: small;
     font-weight: bold;
+}
+
+.push-down {
+    flex: 1;
 }
 
 .in-message-date {

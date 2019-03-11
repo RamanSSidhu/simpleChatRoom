@@ -36,6 +36,8 @@ function renderMessageList (messageList) {
                     </div>
                 </li>`);
     })
+
+    $(`#messages-list`).scrollTop($(`#messages-list`)[0].scrollHeight);
 }
 
 function deleteFromUserList(userObject) {
@@ -52,28 +54,32 @@ function updateUserName (user) {
     $(`.user-message-${user.newUserName} .in-message-user-name`).text(`${user.newUserName}`);
     if (currentUser == user.oldUserName) {
         currentUser = user.newUserName;
+        $(`#user-header`).text(`User: You are ${currentUser}`);
     }
 }
 
 $(document).ready(() => {
-    let socket = io.connect("http://localhost:3000");
+    let socket = io();
 
     socket.on('setUser', (userObject) => {
         console.log(`Received Username: ${userObject.username}`);
         console.log(`Received Color: ${userObject.color}`);
         currentUser = userObject.username;
+        $(`#user-header`).text(`User: You are ${currentUser}`);
         root.style.setProperty('--user-color', userObject.color);
     });
 
     $(`#btn-send`).on('click', () => {
         let inputBoxContents = $(`#input-box`).val();
 
-        socket.emit('newMessage', {
-            messageContent: inputBoxContents,
-            username: currentUser
-        });
+        if (inputBoxContents !== '') {
+            socket.emit('newMessage', {
+                messageContent: inputBoxContents,
+                username: currentUser
+            });
 
-        $(`#input-box`).val('');
+            $(`#input-box`).val('');
+        }
     });
 
     $(document).keypress((keyPressed) => {
