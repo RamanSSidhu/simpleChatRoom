@@ -173,8 +173,8 @@ io.on('connection', (socket) => {
     socket.on('newMessage', (message) => {
 
         if (/^(\/nick|\/nickcolor)/.test(message.messageContent)) {
-            let nickColorRegex = /^\/nickcolor\s+([0-9A-Fa-f]{6})$/;
             if (/^\/nickcolor\s+([0-9A-Fa-f]{6})$/.test(message.messageContent)) {
+                let nickColorRegex = /^\/nickcolor\s+([0-9A-Fa-f]{6})$/;
                 let colorCode = "#";
                 colorCode += message.messageContent.match(nickColorRegex)[1];
                 console.log(`New Color: ${colorCode}`);
@@ -184,9 +184,22 @@ io.on('connection', (socket) => {
                 io.sockets.emit(`deleteUser`, userObject);
                 colorsMap.set(userObject.username, userObject.color);
                 io.emit(`addUsers`, JSON.stringify((Array.from(new Map().set(userObject.username, userObject.color)))));
-            } else if (/^\/nick\s+(.*)$/.test(message.messageContent)) {
+            } else if (/^\/nick\s+(.+)$/.test(message.messageContent)) {
                 let newNicknameRegex = /^\/nick\s+(.*)$/;
                 let newName = message.messageContent.match(newNicknameRegex)[1];
+
+                // Ensure not ChatBot
+                if (newName === "ChatBot") {
+                    let messageObject = {
+                        username: "ChatBot",
+                        messageContent: "You can't change to ChatBot silly...",
+                        timestamp: new Date().toLocaleString(),
+                        color: "red"
+                    };
+                    socket.emit('addMessages', [messageObject]);
+                    return;
+                }
+
                 let oldUsername = userObject.username;
                 console.log(`New Name: ${newName}`);
                 colorsMap.delete(userObject.username);
@@ -196,7 +209,14 @@ io.on('connection', (socket) => {
                 io.emit(`addUsers`, JSON.stringify((Array.from(new Map().set(userObject.username, userObject.color)))));
                 io.emit(`updateUserNameInMessages`, { newUserName: userObject.username, oldUserName: oldUsername });
             } else {
-                // TODO: Error handling
+                let invalidCommand = "Invalid Command: " + message.messageContent;
+                let messageObject = {
+                    username: "ChatBot",
+                    messageContent: invalidCommand,
+                    timestamp: new Date().toLocaleString(),
+                    color: "red"
+                };
+                socket.emit('addMessages', [messageObject]);
             }
         }
         else {
